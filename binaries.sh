@@ -14,11 +14,7 @@ declare -a systemTools=( "ssh" "sshpass" "uuidgen" "sleep" "grep" "mount" \
 			 "umount" "mkdir" "scp" "ssh-keygen" )
 declare -a boards=( "sama5d2_xplained" )
 
-declare -A config=( ["board"]="sama5d2_xplained"
-		    ["acm"]="/dev/ttyACM0"
-		    ["ip"]="192.168.32.2"
-		    ["password"]="root"
-		    ["img-dir"]="/var/lib/tftpboot/tests/sama5d2_xplained/" )
+declare -A config=( )
 
 function printlog() {
 	local logattrs=$1
@@ -49,6 +45,9 @@ function validateSystem() {
 }
 
 function validateArgs() {
+	if [[ -z $board ]]; then
+		return 0
+	fi
 	
 	return 1
 }
@@ -66,7 +65,7 @@ function validateConfig() {
 		return 0
 	fi
 
-	if [[ -z ${config["password"]} ]]; then
+	if [[ -z ${config["passwd"]} ]]; then
 		return 0
 	fi
 	
@@ -74,7 +73,23 @@ function validateConfig() {
 	   [[ ! -d ${config["img-dir"]} ]]; then
 		return 0
 	fi
-	
+
+	return 1
+}
+
+function includeBoardDeps() {
+	if [ ! -f "board/config/${board}" ]; then
+		return 0
+	fi
+
+	source "board/config/${board}"
+
+	config["board"]=${BOARD_NAME}
+	config["acm"]=${BOARD_ACM}
+	config["ip"]=${BOARD_IP}
+	config["passwd"]=${BOARD_PASSWD}
+	config["img-dir"]=${BOARD_IMG_DIR}
+
 	return 1
 }
 
@@ -128,7 +143,7 @@ function installBootImgs() {
 function runCmd() {
 	local cmd=$1
 	
-	output=$(sshpass -f <(printf '%s\n' ${config["password"]}) ssh -o StrictHostKeyChecking=no root@${config["ip"]} ${cmd})
+	output=$(sshpass -f <(printf '%s\n' ${config["passwd"]}) ssh -o StrictHostKeyChecking=no root@${config["ip"]} ${cmd})
 	
 	echo "${output}"
 }
@@ -175,19 +190,31 @@ function testEthernet() {
 }
 
 function usage() {
-	echo "usage: $1 [-p][-d][-h]"
+	echo "usage: $1 [-b][-h]"
 	echo
 	echo -e "\tTest AT91Bootstrap binaries"
 	echo
+	echo -e "\t-b"
+	echo -e "\t\tboard to run tests for"
 	echo -e "\t-h"
 	echo -e "\t\tdisplay this help message and exit"
 	echo -e ""
 
 }
 
-imgDir=
-while getopts "h" opt; do
+if validateSystem; then
+	tools=
+	for t in "${systemTools[@]}"; do
+		tools="${tools} ${t}"
+	done
+	printlog ${err} "Invalid system configuration! Check you have installed the following tools: ${tools}"
+	exit 1
+fi
+
+board=
+while getopts "b:h" opt; do
 	case $opt in
+		b) board=$OPTARG ;;
 		h) usage $0; exit 0 ;;
 		:) echo "missing argument for option -$OPTARG"; exit 1 ;;
 		\?) echo "unknown option -$OPTARG"; exit 1 ;;
@@ -200,17 +227,13 @@ if validateArgs; then
 	exit 1
 fi
 
-if validateConfig; then
-	printlog ${err} "Invalid config!"
+if includeBoardDeps; then
+	printlog ${err} "Failed to include board dependecies!"
 	exit 1
 fi
 
-if validateSystem; then
-	tools=
-	for t in "${systemTools[@]}"; do
-		tools="${tools} ${t}"
-	done
-	printlog ${err} "Invalid system configuration! Check you have installed the following tools: ${tools}"
+if validateConfig; then
+	printlog ${err} "Invalid config!"
 	exit 1
 fi
 
@@ -225,7 +248,7 @@ if [[ -z ${bootDevice} ]]; then
 	exit 1
 fi
 
-if installBootImgs ${bootDevice} ${sessionId} ${imgDir} ${config["board"]} ${config["ip"]}; then
+if installBootImgs ${bootDevice} ${sessionId} ${config["img-dir"]} ${config["board"]} ${config["ip"]}; then
 	printlog ${err} "Failed to install boot images"
 	exit 1
 fi
