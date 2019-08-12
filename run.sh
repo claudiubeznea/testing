@@ -58,12 +58,6 @@ function includeBoardDeps() {
 	return 1
 }
 
-function listBoards() {
-	for b in "${boards[@]}"; do
-		echo ${b}
-	done
-}
-
 function getBootDevice() {
 	local cmdline=$(runCmd "cat /proc/cmdline")
 	local device=
