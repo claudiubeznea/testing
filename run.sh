@@ -1,37 +1,12 @@
 #!/bin/bash
 
-BOLD='\033[1m'
-GREEN='\033[0;32m'
-RED='\033[0;31m'
-YELLOW='\033[1;33m'
-NC='\033[0m'
-
-info=${GREEN}${BOLD} 
-warn=${YELLOW}${BOLD}
-err=${RED}${BOLD}
-
+# include dependecies
+source src/debug.sh
 declare -a systemTools=( "ssh" "sshpass" "uuidgen" "sleep" "grep" "mount" \
 			 "umount" "mkdir" "scp" "ssh-keygen" )
 declare -a boards=( "sama5d2_xplained" )
 
 declare -A config=( )
-
-function printlog() {
-	local logattrs=$1
-	local msg=$2
-	local n=$3
-	local dislogattrs=""
-
-	if [ ! -z ${logattrs} ]; then
-		dislogattrs=${NC}
-	fi
-
-	if [ "${n}" = "y" ]; then
-		echo -en "${logattrs}${msg}${dislogattrs}"
-	else
-		echo -e "${logattrs}${msg}${dislogattrs}"
-	fi		
-}
 
 function validateSystem() {
 	for t in "${systemTools[@]}"; do
