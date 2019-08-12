@@ -2,22 +2,12 @@
 
 # include dependecies
 source src/debug.sh
-declare -a systemTools=( "ssh" "sshpass" "uuidgen" "sleep" "grep" "mount" \
-			 "umount" "mkdir" "scp" "ssh-keygen" )
+source src/system.sh
+
 declare -a boards=( "sama5d2_xplained" )
 
 declare -A config=( )
 
-function validateSystem() {
-	for t in "${systemTools[@]}"; do
-		which ${t} > /dev/null
-		if [ $? -ne 0 ]; then
-			return 0
-		fi
-	done
-	
-	return 1
-}
 
 function validateArgs() {
 	if [[ -z $board ]]; then
