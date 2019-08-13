@@ -5,6 +5,7 @@ source src/debug.sh
 source src/system.sh
 source src/config.sh
 source src/img-install.sh
+source src/util.sh
 
 declare -a boards=( "sama5d2_xplained" )
 
@@ -26,24 +27,6 @@ function runCmd() {
 	output=$(sshpass -f <(printf '%s\n' ${config["passwd"]}) ssh -o StrictHostKeyChecking=no root@${config["ip"]} ${cmd})
 	
 	echo "${output}"
-}
-
-function timeout() {
-	local secs=$1
-	local cmd=$2
-	
-	while [ ${secs} -gt 0 ]; do
-		echo -en "\rWaiting ${secs} seconds..."
-		secs=$((secs-1))
-		#${cmd}
-		#if [ $? -eq 0 ]; then
-		#	break;
-		#fi
-		
-		sleep 1
-	done
-	
-	echo ""
 }
 
 function testUsbGadget() {
