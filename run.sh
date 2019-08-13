@@ -113,7 +113,7 @@ fi
 printlog ${info} "Reboot OK"
 
 printlog ${info} "Testing ethernet..." y
-if testEthernet; then
+if testEthernet "$(declare -p config)"; then
 	printlog ${err} "Fail"
 else
 	printlog ${info} "OK"
