@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# systemTools:		array with system tool names necessary to be installed for
+#			tests to succeed
 declare -a systemTools=( "ssh" "sshpass" "uuidgen" "sleep" "grep" "mount" \
 			 "umount" "mkdir" "scp" "ssh-keygen" )
 
