@@ -10,6 +10,11 @@ info=${GREEN}${BOLD}
 warn=${YELLOW}${BOLD}
 err=${RED}${BOLD}
 
+# printlog:		print logs
+# @$1:			logging level (info, warn, err)
+# @$2:			message to be printed
+# @$3:			if 'y' do not break the line that is printed
+# return:		none
 function printlog() {
 	local logattrs=$1
 	local msg=$2
