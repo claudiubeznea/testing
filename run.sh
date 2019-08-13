@@ -162,10 +162,7 @@ function usage() {
 }
 
 if validateSystem; then
-	tools=
-	for t in "${systemTools[@]}"; do
-		tools="${tools} ${t}"
-	done
+	tools=$(getSystemTools)
 	printlog ${err} "Invalid system configuration! Check you have installed the following tools: ${tools}"
 	exit 1
 fi
