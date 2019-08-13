@@ -115,7 +115,7 @@ timeout 60
 # Run a ls. If this doesn't work... something wrong
 runCmd "ls" > /dev/null
 if [ $? -ne 0 ]; then
-	printlog ${err} "fail!"
+	printlog ${err} "Reboot fail!"
 fi
 
 printlog ${info} "Reboot OK"
