@@ -3,6 +3,7 @@
 # include dependecies
 source src/debug.sh
 source src/system.sh
+source src/config.sh
 
 declare -a boards=( "sama5d2_xplained" )
 
@@ -14,31 +15,6 @@ function validateArgs() {
 		return 0
 	fi
 	
-	return 1
-}
-
-function validateConfig() {
-	if [[ -z ${config["board"]} ]]; then
-		return 0
-	fi
-
-	if [[ -z ${config["acm"]} ]]; then
-		return 0
-	fi
-	
-	if [[ -z ${config["ip"]} ]]; then
-		return 0
-	fi
-
-	if [[ -z ${config["passwd"]} ]]; then
-		return 0
-	fi
-	
-	if [[ -z ${config["img-dir"]} ]] || \
-	   [[ ! -d ${config["img-dir"]} ]]; then
-		return 0
-	fi
-
 	return 1
 }
 
