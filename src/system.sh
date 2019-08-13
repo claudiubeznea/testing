@@ -3,6 +3,9 @@
 declare -a systemTools=( "ssh" "sshpass" "uuidgen" "sleep" "grep" "mount" \
 			 "umount" "mkdir" "scp" "ssh-keygen" )
 
+# validateSystem:	check if necessary tools for testing are installed
+# @args:		none
+# return:		1 - success, 0 - fail
 function validateSystem() {
 	for t in "${systemTools[@]}"; do
 		which ${t} > /dev/null
