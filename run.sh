@@ -76,7 +76,7 @@ if updateConfig; then
 	exit 1
 fi
 
-if validateConfig; then
+if validateConfig "$(declare -p config)"; then
 	printlog ${err} "Invalid config!"
 	exit 1
 fi

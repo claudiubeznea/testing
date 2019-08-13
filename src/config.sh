@@ -4,15 +4,17 @@
 # @args:		none
 # return:		1 - success, 0 - fail
 function validateConfig() {
+	eval "declare -A cfg="${1#*=}
+
 	# -z validation
-	for c in "${config[@]}"; do
+	for c in "${cfg[@]}"; do
 		if [[ -z ${c} ]]; then
 			return 0
 		fi
 	done
 
 	# individual validation
-	if [[ ! -d ${config["img-dir"]} ]]; then
+	if [[ ! -d ${cfg["img-dir"]} ]]; then
 		return 0
 	fi
 
