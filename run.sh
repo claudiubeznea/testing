@@ -7,6 +7,7 @@ source src/config.sh
 
 declare -a boards=( "sama5d2_xplained" )
 
+# global dictionary keeping board config
 declare -A config=( )
 
 
