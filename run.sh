@@ -100,11 +100,14 @@ fi
 
 printlog ${info} "Reboot OK"
 
-printlog ${info} "Testing ethernet..." y
-if testEthernet "$(declare -p config)"; then
-	printlog ${err} "Fail"
-else
-	printlog ${info} "OK"
-fi
+# run tests
+for test in "${!globalTests[@]}"; do
+	printlog ${info} "Testing ${test}... " y
+	if ${globalTests[${test}]} "$(declare -p config)"; then
+		printlog ${err} "fail"
+	else
+		printlog ${info} "OK"
+	fi
+done
 
 exit 0
