@@ -6,7 +6,9 @@ source src/system.sh
 source src/config.sh
 source src/img-install.sh
 source src/util.sh
-source src/tests/*
+source src/tests/tests.sh
+source src/tests/ethernet.sh
+source src/tests/usb-gadget.sh
 
 declare -a boards=( "sama5d2_xplained" )
 
