@@ -21,14 +21,6 @@ function validateArgs() {
 	return 1
 }
 
-function runCmd() {
-	local cmd=$1
-	
-	output=$(sshpass -f <(printf '%s\n' ${config["passwd"]}) ssh -o StrictHostKeyChecking=no root@${config["ip"]} ${cmd})
-	
-	echo "${output}"
-}
-
 function testUsbGadget() {
 	runCmd "rmmod g_serial" > /dev/null
 	runCmd "rmmod atmel_usba_udc" > /dev/null

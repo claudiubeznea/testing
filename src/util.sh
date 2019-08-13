@@ -16,3 +16,14 @@ function timeout() {
 	echo ""
 }
 
+# runCmd:		execute a bash command on remote target
+# @$1:			command to be executed
+# return:		command output
+function runCmd() {
+	local cmd=$1
+
+	output=$(sshpass -f <(printf '%s\n' ${config["passwd"]}) ssh -o StrictHostKeyChecking=no root@${config["ip"]} ${cmd})
+
+	echo "${output}"
+}
+
