@@ -23,6 +23,7 @@ function validateConfig() {
 
 # updateConfig: 	update config dictionary with board config file
 # @args:		none
+# note: 		call this in the context of run.sh
 # return:		1 - success, 0 - fail
 function updateConfig() {
 	if [ ! -f "board/config/${board}" ]; then
