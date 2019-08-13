@@ -2,6 +2,9 @@
 
 source src/util.sh
 
+# testEthernet: 	run ethernet test
+# @args:		none
+# return:		1 - success, 0 - fail
 function testEthernet() {
 	runCmd "ping -c 1 ${config["ip"]}" > /dev/null
 	if [ $? -ne 0 ]; then
