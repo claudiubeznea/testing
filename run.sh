@@ -4,6 +4,7 @@
 source src/debug.sh
 source src/system.sh
 source src/config.sh
+source src/img-install.sh
 
 declare -a boards=( "sama5d2_xplained" )
 
@@ -16,47 +17,6 @@ function validateArgs() {
 		return 0
 	fi
 	
-	return 1
-}
-
-function getBootDevice() {
-	local cmdline=$(runCmd "cat /proc/cmdline")
-	local device=
-
-	echo "${cmdline}" | grep "mmc" > /dev/null
-	if [ $? -eq 0 ]; then
-		echo "${cmdline}" | grep "mmcblk0" > /dev/null
-		if [ $? -eq 0 ]; then
-			device=mmcblk0p1
-		else
-			device=mmcblk1p1
-		fi
-	fi
-
-	echo "${device}"
-}
-
-function installBootImgs() {
-	local device=$1
-	local sessionId=$2
-	local imgDir=$3
-	local boardName=$4
-	local ipAddr=$5
-	local mountDir="${sessionId}-${device}"
-
-	printlog ${info} "Instaling boot images..."
-	runCmd "mkdir /mnt/${mountDir}" > /dev/null
-	runCmd "mount /dev/${device} /mnt/${mountDir}" > /dev/null
-
-	# copy
-	sshpass -f <(printf '%s' root) scp ${imgDir}/BOOT.BIN root@${ipAddr}:/mnt/${mountDir}
-	sshpass -f <(printf '%s' root) scp ${imgDir}/${boardName}.itb root@${ipAddr}:/mnt/${mountDir}
-	sshpass -f <(printf '%s' root) scp ${imgDir}/u-boot.bin root@${ipAddr}:/mnt/${mountDir}
-	sshpass -f <(printf '%s' root) scp ${imgDir}/uboot.env root@${ipAddr}:/mnt/${mountDir}
-	
-	runCmd "umount /mnt/${mountDir}" > /dev/null
-	runCmd "rm -rf /mnt/${mountDir}" > /dev/null
-
 	return 1
 }
 
