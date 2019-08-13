@@ -19,3 +19,22 @@ function validateConfig() {
 	return 1
 }
 
+# updateConfig: 	update config dictionary with board config file
+# @args:		none
+# return:		1 - success, 0 - fail
+function updateConfig() {
+	if [ ! -f "board/config/${board}" ]; then
+		return 0
+	fi
+
+	source "board/config/${board}"
+
+	config["board"]=${BOARD_NAME}
+	config["acm"]=${BOARD_ACM}
+	config["ip"]=${BOARD_IP}
+	config["passwd"]=${BOARD_PASSWD}
+	config["img-dir"]=${BOARD_IMG_DIR}
+
+	return 1
+}
+

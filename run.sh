@@ -18,22 +18,6 @@ function validateArgs() {
 	return 1
 }
 
-function includeBoardDeps() {
-	if [ ! -f "board/config/${board}" ]; then
-		return 0
-	fi
-
-	source "board/config/${board}"
-
-	config["board"]=${BOARD_NAME}
-	config["acm"]=${BOARD_ACM}
-	config["ip"]=${BOARD_IP}
-	config["passwd"]=${BOARD_PASSWD}
-	config["img-dir"]=${BOARD_IMG_DIR}
-
-	return 1
-}
-
 function getBootDevice() {
 	local cmdline=$(runCmd "cat /proc/cmdline")
 	local device=
@@ -159,7 +143,7 @@ if validateArgs; then
 	exit 1
 fi
 
-if includeBoardDeps; then
+if updateConfig; then
 	printlog ${err} "Failed to include board dependecies!"
 	exit 1
 fi
