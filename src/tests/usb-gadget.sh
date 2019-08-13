@@ -4,15 +4,45 @@
 # @args:		none
 # return:		none
 function testUsbGadget() {
-	runCmd "rmmod g_serial" > /dev/null
-	runCmd "rmmod atmel_usba_udc" > /dev/null
-	runCmd "modprobe atmel_usba_udc" > /dev/null
-	runCmd "modprobe g_serial" > /dev/null
+	eval "declare -A cfg="${1#*=}
 
-	recv=$(cat /dev/ttyACM0)
-	runCmd "echo test > /dev/ttyGS0" > /dev/null
+	runCmd "rmmod g_serial" >/dev/null 2>&1
+	if [ $? -ne 0 ]; then
+		return 0
+	fi
+	runCmd "rmmod atmel_usba_udc" >/dev/null 2>&1
+	if [ $? -ne 0 ]; then
+		return 0
+	fi
+	runCmd "modprobe atmel_usba_udc" >/dev/null 2>&1
+	if [ $? -ne 0 ]; then
+		return 0
+	fi
+	runCmd "modprobe g_serial" >/dev/null 2>&1
+	if [ $? -ne 0 ]; then
+		return 0
+	fi
 
-	recv=$(runCmd "cat /dev/ttyGS0")
+#	recv=$(cat /dev/ttyACM0)
+#	if [ $? -ne 0 ]; then
+#		return 0
+#	fi
+: '
+	runCmd "echo test > /dev/ttyGS0" >/dev/null 2>&1
+	if [ $? -ne 0 ]; then
+		return 0
+	fi
+
+	recv=$(runCmd "cat /dev/ttyGS0") >/dev/null 2>&1
+	if [ $? -ne 0 ]; then
+		return 0
+	fi
+
 	echo "test" > /dev/ttyACM0
+	if [ $? -ne 0 ]; then
+		return 0
+	fi
+'
+	return 1
 }
 
