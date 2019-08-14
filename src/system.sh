@@ -3,7 +3,8 @@
 # systemTools:		array with system tool names necessary to be installed for
 #			tests to succeed
 declare -a systemTools=( "ssh" "sshpass" "uuidgen" "sleep" "grep" "mount" \
-			 "umount" "mkdir" "scp" "ssh-keygen" )
+			 "umount" "mkdir" "scp" "ssh-keygen" "iperf3" \
+			 "ping" "cat" "rm" "grep" "awk" "pkill" )
 
 # validateSystem:	check if necessary tools for testing are installed
 # @args:		none
