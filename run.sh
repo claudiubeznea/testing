@@ -73,6 +73,7 @@ fi
 ssh-keygen -f "/home/$(whoami)/.ssh/known_hosts" -R ${config["ip"]}
 
 sessionId=$(uuidgen)
+config["session-id"]=$(uuidgen)
 
 bootDevice=$(getBootDevice)
 if [[ -z ${bootDevice} ]]; then
