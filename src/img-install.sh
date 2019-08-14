@@ -4,7 +4,7 @@
 # @args:		none
 # return:		booting device string
 function getBootDevice() {
-	local cmdline=$(runCmd "cat /proc/cmdline")
+	local cmdline=$(runCmd "cat /proc/cmdline" y)
 	local device=
 
 	echo "${cmdline}" | grep "mmc" > /dev/null
@@ -36,8 +36,8 @@ function installBootImgs() {
 	local mountDir="${sessionId}-${device}"
 
 	printlog ${info} "Instaling boot images..."
-	runCmd "mkdir /mnt/${mountDir}" > /dev/null
-	runCmd "mount /dev/${device} /mnt/${mountDir}" > /dev/null
+	runCmd "mkdir /mnt/${mountDir}" y > /dev/null
+	runCmd "mount /dev/${device} /mnt/${mountDir}" y > /dev/null
 
 	# copy
 	sshpass -f <(printf '%s' root) scp ${imgDir}/BOOT.BIN root@${ipAddr}:/mnt/${mountDir}
@@ -45,8 +45,8 @@ function installBootImgs() {
 	sshpass -f <(printf '%s' root) scp ${imgDir}/u-boot.bin root@${ipAddr}:/mnt/${mountDir}
 	sshpass -f <(printf '%s' root) scp ${imgDir}/uboot.env root@${ipAddr}:/mnt/${mountDir}
 	
-	runCmd "umount /mnt/${mountDir}" > /dev/null
-	runCmd "rm -rf /mnt/${mountDir}" > /dev/null
+	runCmd "umount /mnt/${mountDir}" y > /dev/null
+	runCmd "rm -rf /mnt/${mountDir}" y > /dev/null
 
 	return 1
 }
