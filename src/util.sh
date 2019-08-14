@@ -33,8 +33,11 @@ function runCmd() {
 			output=$(sshpass -f <(printf '%s\n' ${config["passwd"]}) ssh -o StrictHostKeyChecking=no root@${config["ip"]} ${cmd})
 		fi
 	else
-		$(sshpass -f <(printf '%s\n' ${config["passwd"]}) ssh -f -o StrictHostKeyChecking=no root@${config["ip"]} ${cmd} < /dev/null > /tmp/${config["session-id"]}-${config["board"]}.log 2>&1 &)
-
+		if [ "${logtofile}" == "y" ]; then
+			$(sshpass -f <(printf '%s\n' ${config["passwd"]}) ssh -f -o StrictHostKeyChecking=no root@${config["ip"]} ${cmd} < /dev/null > /tmp/${config["session-id"]}-${config["board"]}.log 2>&1 &)
+		else
+			$(sshpass -f <(printf '%s\n' ${config["passwd"]}) ssh -f -o StrictHostKeyChecking=no root@${config["ip"]} ${cmd} < /dev/null > /dev/null 2>&1 &)
+		fi
 		# give it a chance to start on remote system
 		sleep 5
 	fi
