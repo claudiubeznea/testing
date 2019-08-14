@@ -86,14 +86,14 @@ if installBootImgs ${bootDevice} ${sessionId} ${config["img-dir"]} ${config["boa
 fi
 
 printlog ${info} "Rebooting..."
-runCmd "reboot" > /dev/null
+runCmd "reboot" y > /dev/null
 
 # Wait 1 minute for reboot. If more than 1 minute for reboot... something
 # is wrong with the new images
 timeout 60
 
 # Run a ls. If this doesn't work... something wrong
-runCmd "ls" > /dev/null
+runCmd "ls" y > /dev/null
 if [ $? -ne 0 ]; then
 	printlog ${err} "Reboot fail!"
 fi
