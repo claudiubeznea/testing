@@ -6,19 +6,19 @@
 function testUsbGadget() {
 	eval "declare -A cfg="${1#*=}
 
-	runCmd "rmmod g_serial" >/dev/null 2>&1
+	runCmd "rmmod g_serial" y >/dev/null 2>&1
 	if [ $? -ne 0 ]; then
 		return 0
 	fi
-	runCmd "rmmod atmel_usba_udc" >/dev/null 2>&1
+	runCmd "rmmod atmel_usba_udc" y >/dev/null 2>&1
 	if [ $? -ne 0 ]; then
 		return 0
 	fi
-	runCmd "modprobe atmel_usba_udc" >/dev/null 2>&1
+	runCmd "modprobe atmel_usba_udc" y >/dev/null 2>&1
 	if [ $? -ne 0 ]; then
 		return 0
 	fi
-	runCmd "modprobe g_serial" >/dev/null 2>&1
+	runCmd "modprobe g_serial" y >/dev/null 2>&1
 	if [ $? -ne 0 ]; then
 		return 0
 	fi
@@ -28,12 +28,12 @@ function testUsbGadget() {
 #		return 0
 #	fi
 : '
-	runCmd "echo test > /dev/ttyGS0" >/dev/null 2>&1
+	runCmd "echo test > /dev/ttyGS0" y>/dev/null 2>&1
 	if [ $? -ne 0 ]; then
 		return 0
 	fi
 
-	recv=$(runCmd "cat /dev/ttyGS0") >/dev/null 2>&1
+	recv=$(runCmd "cat /dev/ttyGS0" y) >/dev/null 2>&1
 	if [ $? -ne 0 ]; then
 		return 0
 	fi
