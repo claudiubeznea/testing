@@ -35,6 +35,7 @@ function updateConfig() {
 	config["board"]=${BOARD_NAME}
 	config["acm"]=${BOARD_ACM}
 	config["ip"]=${BOARD_IP}
+	config["host-ip"]=${BOARD_HOST_IP}
 	config["passwd"]=${BOARD_PASSWD}
 	config["img-dir"]=${BOARD_IMG_DIR}
 
