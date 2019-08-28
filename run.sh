@@ -84,6 +84,20 @@ ssh-keygen -f "/home/$(whoami)/.ssh/known_hosts" -R ${config["ip"]}
 
 config["session-id"]=$(uuidgen)
 
+# run tests
+for idx in "${!globalTestsOrdered[@]}"; do
+	testName=${globalTestsOrdered[${idx}]}
+	if [ ! -z ${tst} ] && [ ${tst} != ${testName} ]; then
+		continue
+	fi
+
+	printlog ${info} "Testing ${testName}... " y
+	if ${globalTests[${testName}]} "$(declare -p config)"; then
+		printlog ${err} "fail"
+	else
+		printlog ${info} "OK"
+	fi
+done
 fi
 
 	exit 1
