@@ -3,7 +3,7 @@
 source src/util.sh
 
 # testEthernet: 	run ethernet test
-# @args:		none
+# @args:		config
 # return:		1 - success, 0 - fail
 function testEthernet() {
 	eval "declare -A cfg="${1#*=}
