@@ -20,6 +20,12 @@ function validateArgs() {
 	if [[ -z $board ]]; then
 		return 0
 	fi
+
+	if [[ ! -z "${tst}" ]]; then
+		if isTestValid "${tst}"; then
+			return 0
+		fi
+	fi
 	
 	return 1
 }
@@ -31,6 +37,8 @@ function usage() {
 	echo
 	echo -e "\t-b"
 	echo -e "\t\tboard to run tests for"
+	echo -e "\t-t"
+	echo -e "\t\trun only test"
 	echo -e "\t-h"
 	echo -e "\t\tdisplay this help message and exit"
 	echo -e ""
@@ -43,10 +51,11 @@ if validateSystem; then
 	exit 1
 fi
 
-board=
-while getopts "b:h" opt; do
+board= tst=
+while getopts "b:t:ph" opt; do
 	case $opt in
 		b) board=$OPTARG ;;
+		t) tst=$OPTARG ;;
 		h) usage $0; exit 0 ;;
 		:) echo "missing argument for option -$OPTARG"; exit 1 ;;
 		\?) echo "unknown option -$OPTARG"; exit 1 ;;
