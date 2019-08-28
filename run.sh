@@ -9,6 +9,7 @@ source src/util.sh
 source src/tests/tests.sh
 source src/tests/ethernet.sh
 source src/tests/usb-gadget.sh
+source src/tests/pm.sh
 source src/tests/install-boot-imgs.sh
 
 declare -a boards=( "sama5d2_xplained" )
@@ -40,6 +41,8 @@ function usage() {
 	echo -e "\t\tboard to run tests for"
 	echo -e "\t-t"
 	echo -e "\t\trun only test"
+	echo -e "\t-p"
+	echo -e "\t\texecute all teste after suspend to mem"
 	echo -e "\t-h"
 	echo -e "\t\tdisplay this help message and exit"
 	echo -e ""
@@ -52,11 +55,12 @@ if validateSystem; then
 	exit 1
 fi
 
-board= tst=
+board= tst= pm=
 while getopts "b:t:ph" opt; do
 	case $opt in
 		b) board=$OPTARG ;;
 		t) tst=$OPTARG ;;
+		p) pm=y ;;
 		h) usage $0; exit 0 ;;
 		:) echo "missing argument for option -$OPTARG"; exit 1 ;;
 		\?) echo "unknown option -$OPTARG"; exit 1 ;;
@@ -98,18 +102,33 @@ for idx in "${!globalTestsOrdered[@]}"; do
 		printlog ${info} "OK"
 	fi
 done
+
+if [[ -z ${pm} ]]; then
+	exit 0
 fi
 
+# run PM tests
+printlog ${info} "Testing PM... " y
+if pmTest "$(declare -p config)"; then
+	printlog ${err} "Fail"
 	exit 1
 fi
+printlog ${info} "OK"
 
+# run all tests again
+for idx in "${!globalTestsOrdered[@]}"; do
+	testName=${globalTestsOrdered[${idx}]}
 
+	if [ ${testName} == "install-boot-imgs" ]; then
+		continue
+	fi
 
+	if [ ! -z ${tst} ] && [ ${tst} != ${testName} ]; then
+		continue
+	fi
 
-# run tests
-for test in "${!globalTests[@]}"; do
-	printlog ${info} "Testing ${test}... " y
-	if ${globalTests[${test}]} "$(declare -p config)"; then
+	printlog ${info} "Testing ${testName}... " y
+	if ${globalTests[${testName}]} "$(declare -p config)"; then
 		printlog ${err} "fail"
 	else
 		printlog ${info} "OK"
