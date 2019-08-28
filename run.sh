@@ -9,6 +9,7 @@ source src/util.sh
 source src/tests/tests.sh
 source src/tests/ethernet.sh
 source src/tests/usb-gadget.sh
+source src/tests/install-boot-imgs.sh
 
 declare -a boards=( "sama5d2_xplained" )
 
@@ -81,34 +82,15 @@ fi
 # Remove ssh keys
 ssh-keygen -f "/home/$(whoami)/.ssh/known_hosts" -R ${config["ip"]}
 
-sessionId=$(uuidgen)
 config["session-id"]=$(uuidgen)
 
-bootDevice=$(getBootDevice)
-if [[ -z ${bootDevice} ]]; then
-	printlog ${err} "Failed to get boot device"
+fi
+
 	exit 1
 fi
 
-if installBootImgs ${bootDevice} ${sessionId} ${config["img-dir"]} ${config["board"]} ${config["ip"]}; then
-	printlog ${err} "Failed to install boot images"
-	exit 1
-fi
 
-printlog ${info} "Rebooting..."
-runCmd "reboot" y > /dev/null
 
-# Wait 1 minute for reboot. If more than 1 minute for reboot... something
-# is wrong with the new images
-timeout 60
-
-# Run a ls. If this doesn't work... something wrong
-runCmd "ls" y > /dev/null
-if [ $? -ne 0 ]; then
-	printlog ${err} "Reboot fail!"
-fi
-
-printlog ${info} "Reboot OK"
 
 # run tests
 for test in "${!globalTests[@]}"; do
