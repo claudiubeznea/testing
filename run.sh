@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # include dependecies
+source boards/util.sh
 source src/debug.sh
 source src/system.sh
 source src/config.sh
@@ -36,6 +37,8 @@ function usage() {
 	echo
 	echo -e "\t-b"
 	echo -e "\t\tboard to run tests for"
+	echo -e "\t-l"
+	echo -e "\t\tlist all supported boards"
 	echo -e "\t-t"
 	echo -e "\t\trun only test"
 	echo -e "\t-p"
@@ -53,9 +56,10 @@ if validateSystem; then
 fi
 
 board= tst= pm=
-while getopts "b:t:ph" opt; do
+while getopts "b:lt:ph" opt; do
 	case $opt in
 		b) board=$OPTARG ;;
+		l) showBoards ; exit 0 ;;
 		t) tst=$OPTARG ;;
 		p) pm=y ;;
 		h) usage $0; exit 0 ;;
