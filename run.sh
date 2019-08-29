@@ -41,6 +41,8 @@ function usage() {
 	echo -e "\t\tlist all supported boards"
 	echo -e "\t-t"
 	echo -e "\t\trun only test"
+	echo -e "\t-x"
+	echo -e "\t\tlist all supported tests"
 	echo -e "\t-p"
 	echo -e "\t\texecute all teste after suspend to mem"
 	echo -e "\t-h"
@@ -56,11 +58,12 @@ if validateSystem; then
 fi
 
 board= tst= pm=
-while getopts "b:lt:ph" opt; do
+while getopts "b:lt:xph" opt; do
 	case $opt in
 		b) board=$OPTARG ;;
 		l) showBoards ; exit 0 ;;
 		t) tst=$OPTARG ;;
+		x) showTests ; exit 0 ;;
 		p) pm=y ;;
 		h) usage $0; exit 0 ;;
 		:) echo "missing argument for option -$OPTARG"; exit 1 ;;

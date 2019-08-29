@@ -22,3 +22,12 @@ function isTestValid() {
 
 	return 0
 }
+
+# showTests:		show supported tests
+# @args:		none
+# returns:		none
+function showTests() {
+	for idx in ${!globalTestsOrdered[@]}; do
+		echo ${globalTestsOrdered[${idx}]}
+	done
+}
