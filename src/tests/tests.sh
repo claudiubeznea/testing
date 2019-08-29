@@ -11,6 +11,9 @@ declare -a globalTestsOrdered=(
 	"ethernet"
 	)
 
+# isTestValid:		check if a test is valid
+# @$1:			test to check if is valid or not
+# returns:		0 - invalid test, 1 - valid test
 function isTestValid() {
 	local tst=$1
 
