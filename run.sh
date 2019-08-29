@@ -21,7 +21,7 @@ function validateArgs() {
 		return 0
 	fi
 
-	if [[ ! -z "${tst}" ]]; then
+	if [[ ! -z ${tst} ]]; then
 		if isTestValid "${tst}"; then
 			return 0
 		fi
