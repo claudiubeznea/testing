@@ -26,7 +26,11 @@ function validateArgs() {
 			return 0
 		fi
 	fi
-	
+
+	if [[ ! -z ${rootfsPartition} ]] && [[ ! -d ${rootfsPartition} ]]; then
+		return 0
+	fi
+
 	return 1
 }
 
@@ -45,6 +49,8 @@ function usage() {
 	echo -e "\t\tlist all supported tests"
 	echo -e "\t-p"
 	echo -e "\t\texecute all teste after suspend to mem"
+	echo -e "\t-c"
+	echo -e "\t\t</path/to/rootfs/parition>"
 	echo -e "\t-h"
 	echo -e "\t\tdisplay this help message and exit"
 	echo -e ""
@@ -56,14 +62,15 @@ if validateSystem; then
 	exit 1
 fi
 
-board= tst= pm=
-while getopts "b:lt:xph" opt; do
+board= tst= pm= rootfsPartition=
+while getopts "b:lt:xpc:h" opt; do
 	case $opt in
 		b) board=$OPTARG ;;
 		l) showBoards ; exit 0 ;;
 		t) tst=$OPTARG ;;
 		x) showTests ; exit 0 ;;
 		p) pm=y ;;
+		c) rootfsPartition=$OPTARG ;;
 		h) usage $0; exit 0 ;;
 		:) echo "missing argument for option -$OPTARG"; exit 1 ;;
 		\?) echo "unknown option -$OPTARG"; exit 1 ;;
@@ -86,10 +93,21 @@ if validateConfig "$(declare -p config)"; then
 	exit 1
 fi
 
+# update session id
+config["session-id"]=$(uuidgen)
+
+# IP address parition prepare is executed to update the board IP address on
+# the SD card that will be used later in the test procedure. One should run
+# this script with -c </path/to/rootfs/parititon> in order to prepare SD
+# card with IP addresses that are used by board config file.
+if [[ ! -z ${rootfsPartition} ]]; then
+	configIpAddressOnSDCardParition ${rootfsPartition} ${config["ip"]} "eth0"
+	printlog ${info} "Done!"
+	exit 0
+fi
+
 # Remove ssh keys
 ssh-keygen -f "/home/$(whoami)/.ssh/known_hosts" -R ${config["ip"]}
-
-config["session-id"]=$(uuidgen)
 
 # run tests
 for idx in "${!globalTestsOrdered[@]}"; do
