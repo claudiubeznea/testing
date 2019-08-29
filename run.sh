@@ -4,15 +4,12 @@
 source src/debug.sh
 source src/system.sh
 source src/config.sh
-source src/img-install.sh
 source src/util.sh
 source src/tests/tests.sh
 source src/tests/ethernet.sh
 source src/tests/usb-gadget.sh
 source src/tests/pm.sh
 source src/tests/install-boot-imgs.sh
-
-declare -a boards=( "sama5d2_xplained" )
 
 # global dictionary keeping board config
 declare -A config=( )
