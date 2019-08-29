@@ -26,11 +26,11 @@ function validateConfig() {
 # note: 		call this in the context of run.sh
 # return:		1 - success, 0 - fail
 function updateConfig() {
-	if [ ! -f "board/config/${board}" ]; then
+	if [ ! -f "boards/config/${board}" ]; then
 		return 0
 	fi
 
-	source "board/config/${board}"
+	source "boards/config/${board}"
 
 	config["board"]=${BOARD_NAME}
 	config["acm"]=${BOARD_ACM}
