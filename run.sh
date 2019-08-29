@@ -33,7 +33,7 @@ function validateArgs() {
 function usage() {
 	echo "usage: $1 [-b][-h]"
 	echo
-	echo -e "\tTest AT91Bootstrap binaries"
+	echo -e "\tTest Linux4SAM binaries"
 	echo
 	echo -e "\t-b"
 	echo -e "\t\tboard to run tests for"
