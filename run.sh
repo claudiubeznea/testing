@@ -48,7 +48,6 @@ function usage() {
 	echo -e "\t-h"
 	echo -e "\t\tdisplay this help message and exit"
 	echo -e ""
-
 }
 
 if validateSystem; then
