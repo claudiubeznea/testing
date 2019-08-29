@@ -4,5 +4,5 @@ BOARD_ACM="/dev/ttyACM0"
 BOARD_IP="192.168.32.2"
 BOARD_HOST_IP="192.168.32.1"
 BOARD_PASSWD="root"
-BOARD_IMG_DIR="/var/lib/tftpboot/tests/sama5d2_xplained/"
+BOARD_IMG_DIR="/var/lib/tftpboot/tests/sama5d2_xplained"
 
