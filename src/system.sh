@@ -4,7 +4,7 @@
 #			tests to succeed
 declare -a systemTools=( "ssh" "sshpass" "uuidgen" "sleep" "grep" "mount" \
 			 "umount" "mkdir" "scp" "ssh-keygen" "iperf3" \
-			 "ping" "cat" "rm" "grep" "awk" "pkill" )
+			 "ping" "cat" "rm" "grep" "awk" "pkill" "sed" )
 
 # validateSystem:	check if necessary tools for testing are installed
 # @args:		none
