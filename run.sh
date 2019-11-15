@@ -8,6 +8,7 @@ source src/config.sh
 source src/util.sh
 source src/tests/tests.sh
 source src/tests/ethernet.sh
+source src/tests/ethernet-link.sh
 source src/tests/usb-gadget.sh
 source src/tests/pm.sh
 source src/tests/install-boot-imgs.sh
