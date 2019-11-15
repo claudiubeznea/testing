@@ -4,7 +4,7 @@
 # @args:		none
 # return:		booting device string
 function getBootDevice() {
-	local cmdline=$(runCmd "cat /proc/cmdline" y)
+	local cmdline=$(runCmd "cat /proc/cmdline" "" y)
 	local device=
 
 	echo "${cmdline}" | grep "mmc" > /dev/null
@@ -33,8 +33,8 @@ function installBootImgs() {
 		return 0
 	fi
 
-	runCmd "mkdir /mnt/${mountDir}" y > /dev/null
-	runCmd "mount /dev/${bootDevice} /mnt/${mountDir}" y > /dev/null
+	runCmd "mkdir /mnt/${mountDir}" "" y> /dev/null
+	runCmd "mount /dev/${bootDevice} /mnt/${mountDir}" "" y > /dev/null
 
 	# copy
 	sshpass -f <(printf '%s' root) scp ${cfg["img-dir"]}/BOOT.BIN root@${cfg["ip"]}:/mnt/${mountDir} > /dev/null
@@ -42,18 +42,18 @@ function installBootImgs() {
 	sshpass -f <(printf '%s' root) scp ${cfg["img-dir"]}/u-boot.bin root@${cfg["ip"]}:/mnt/${mountDir} > /dev/null
 	sshpass -f <(printf '%s' root) scp ${cfg["img-dir"]}/uboot.env root@${cfg["ip"]}:/mnt/${mountDir} > /dev/null
 
-	runCmd "umount /mnt/${mountDir}" y > /dev/null
-	runCmd "rm -rf /mnt/${mountDir}" y > /dev/null
+	runCmd "umount /mnt/${mountDir}" "" y> /dev/null
+	runCmd "rm -rf /mnt/${mountDir}" "" y> /dev/null
 
 	printlog ${info} "Rebooting... "
-	runCmd "reboot" y > /dev/null
+	runCmd "reboot" "" y> /dev/null
 
 	# Wait 1 minute for reboot. If more than 1 minute for reboot... something
 	# is wrong with the new images
 	timeout 60
 
 	# Run a ls. If this doesn't work... something wrong
-	runCmd "ls" y > /dev/null
+	runCmd "ls" "" y> /dev/null
 	if [ $? -ne 0 ]; then
 		return 0
 	fi

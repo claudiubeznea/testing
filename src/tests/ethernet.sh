@@ -8,7 +8,7 @@ source src/util.sh
 function testEthernet() {
 	eval "declare -A cfg="${1#*=}
 
-	output=$(runCmd "ping -c 1 ${cfg["ip"]}" y > /dev/null 2>&1)
+	output=$(runCmd "ping -c 1 ${cfg["ip"]}" "" y> /dev/null 2>&1)
 	if [ $? -ne 0 ]; then
 		return 0
 	fi
@@ -28,7 +28,7 @@ function testEthernet() {
 	rxBwUnit=$(cat /tmp/${cfg["session-id"]}-${cfg["board"]}.log | grep "receiver" | awk '{print $8}')
 
 	printlog ${info} "RX: ${rxBw} ${rxBwUnit} " y
-	runCmd "pkill -f iperf3" y > /dev/null 2>&1
+	runCmd "pkill -f iperf3" "" y > /dev/null 2>&1
 	if [ $? -ne 0 ]; then
 		return 0
 	fi
@@ -43,7 +43,7 @@ function testEthernet() {
 	if [ $? -ne 0 ]; then
 		return 0
 	fi
-	runCmd "iperf3 -c ${cfg["host-ip"]}" y y >/dev/null 2>&1
+	runCmd "iperf3 -c ${cfg["host-ip"]}" "" y y >/dev/null 2>&1
 	if [ $? -ne 0 ]; then
 		return 0
 	fi
@@ -64,7 +64,7 @@ function testEthernet() {
 	fi
 
 	# TX/RX
-	runCmd "iperf3 -s" >/dev/null 2>&1
+	runCmd "iperf3 -s" "" >/dev/null 2>&1
 	if [ $? -ne 0 ]; then
 		return 0
 	fi
@@ -73,7 +73,7 @@ function testEthernet() {
 		return 0
 	fi
 
-	runCmd "iperf3 -c ${cfg["host-ip"]} -O 5 -t 60" y y >/dev/null 2>&1
+	runCmd "iperf3 -c ${cfg["host-ip"]} -O 5 -t 60" "" y y >/dev/null 2>&1
 	if [ $? -ne 0 ]; then
 		return 0
 	fi
@@ -89,7 +89,7 @@ function testEthernet() {
 
 	printlog ${info} "TX/RX: ${txBw} ${txBwUnit} / ${rxBw} ${rxBwUnit} " y
 
-	runCmd "pkill -f iperf3" y > /dev/null 2>&1
+	runCmd "pkill -f iperf3" "" y > /dev/null 2>&1
 	if [ $? -ne 0 ]; then
 		return 0
 	fi
