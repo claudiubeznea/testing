@@ -50,7 +50,7 @@ function installBootImgs() {
 
 	# Wait 1 minute for reboot. If more than 1 minute for reboot... something
 	# is wrong with the new images
-	timeout 60
+	timeout 60 "y"
 
 	# Run a ls. If this doesn't work... something wrong
 	runCmd "ls" "" y> /dev/null

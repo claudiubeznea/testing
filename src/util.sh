@@ -5,9 +5,10 @@
 # return:		none
 function timeout() {
 	local secs=$1
+	local verbose=$2
 
 	while [ ${secs} -gt 0 ]; do
-		echo -en "\rWaiting ${secs} seconds..."
+		[ "x$verbose" != "x" ] && echo -en "\rWaiting ${secs} seconds..."
 		secs=$((secs-1))
 
 		sleep 1
