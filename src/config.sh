@@ -15,6 +15,8 @@ function validateConfig() {
 
 	# individual validation
 	if [[ ! -d ${cfg["img-dir"]} ]]; then
+		# create it here. TODO: move it elsewhere
+		mkdir -p ${cfg["img-dir"]}
 		return 0
 	fi
 
