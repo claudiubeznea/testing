@@ -32,6 +32,10 @@ function validateArgs() {
 		return 0
 	fi
 
+	if [[ ! -z ${testImgDir} ]] && [[ ! -d ${testImgDir} ]]; then
+		return 0
+	fi
+
 	return 1
 }
 
@@ -52,6 +56,8 @@ function usage() {
 	echo -e "\t\texecute all teste after suspend to mem"
 	echo -e "\t-c"
 	echo -e "\t\t</path/to/rootfs/parition>"
+	echo -e "\t-a"
+	echo -e "\t\t</path/to/dirs/were/test/images/are/stored>"
 	echo -e "\t-h"
 	echo -e "\t\tdisplay this help message and exit"
 	echo -e ""
@@ -63,8 +69,8 @@ if validateSystem; then
 	exit 1
 fi
 
-board= tst= pm= rootfsPartition=
-while getopts "b:lt:xpc:h" opt; do
+board= tst= pm= rootfsPartition= testImgDir=
+while getopts "b:lt:xpc:a:h" opt; do
 	case $opt in
 		b) board=$OPTARG ;;
 		l) showBoards ; exit 0 ;;
@@ -72,6 +78,7 @@ while getopts "b:lt:xpc:h" opt; do
 		x) showTests ; exit 0 ;;
 		p) pm=y ;;
 		c) rootfsPartition=$OPTARG ;;
+		a) testImgDir=$OPTARG ;;
 		h) usage $0; exit 0 ;;
 		:) echo "missing argument for option -$OPTARG"; exit 1 ;;
 		\?) echo "unknown option -$OPTARG"; exit 1 ;;

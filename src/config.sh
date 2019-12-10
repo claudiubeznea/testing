@@ -15,8 +15,6 @@ function validateConfig() {
 
 	# individual validation
 	if [[ ! -d ${cfg["img-dir"]} ]]; then
-		# create it here. TODO: move it elsewhere
-		mkdir -p ${cfg["img-dir"]}
 		return 0
 	fi
 
@@ -39,7 +37,12 @@ function updateConfig() {
 	config["ip"]=${BOARD_IP}
 	config["host-ip"]=${BOARD_HOST_IP}
 	config["passwd"]=${BOARD_PASSWD}
-	config["img-dir"]=${BOARD_IMG_DIR}
+	config["img-dir"]=${testImgDir}/${BOARD_IMG_DIR}
+
+	# create it if not available
+	if [[ ! -d ${config["img-dir"]} ]]; then
+		mkdir -p ${config["img-dir"]}
+	fi
 
 	return 1
 }
