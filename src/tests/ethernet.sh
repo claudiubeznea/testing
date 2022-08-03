@@ -1,6 +1,8 @@
 #!/bin/bash
 
-source src/util.sh
+root=$(dirname "$0")
+
+source ${root}/src/util.sh
 
 # testEthernet: 	run ethernet test
 # @args:		config
