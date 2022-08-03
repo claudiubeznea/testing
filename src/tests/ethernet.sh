@@ -14,7 +14,7 @@ function testEthernet() {
 	fi
 
 	# RX
-	runCmd "iperf3 -s" "" y >/dev/null 2>&1
+	runCmd "iperf3 -s" 1 y >/dev/null 2>&1
 	if [ $? -ne 0 ]; then
 		return 0
 	fi
