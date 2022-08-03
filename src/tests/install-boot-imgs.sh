@@ -38,7 +38,22 @@ function installBootImgs() {
 
 	# copy
 	sshpass -f <(printf '%s' root) scp ${cfg["img-dir"]}/BOOT.BIN root@${cfg["ip"]}:/mnt/${mountDir} > /dev/null
-	sshpass -f <(printf '%s' root) scp ${cfg["img-dir"]}/${cfg["board"]}.itb root@${cfg["ip"]}:/mnt/${mountDir} > /dev/null
+
+	# keep zImage and DTB for backward compatiblity
+	if [[ -f ${cfg["img-dir"]}/zImage ]] && \
+	   [[ -f ${cfg["img-dir"]}/at91-${cfg["board"]}.dtb ]]; then
+		[[ -f ${cfg["img-dir"]}/zImage ]] && \
+		echo "Installing ${cfg["img-dir"]}/zImage..." && \
+		sshpass -f <(printf '%s' root) scp ${cfg["img-dir"]}/zImage root@${cfg["ip"]}:/mnt/${mountDir} > /dev/null
+		[[ -f ${cfg["img-dir"]}/at91-${cfg["board"]}.dtb ]] && \
+		echo "Installing ${cfg["img-dir"]}/at91-${cfg["board"]}.dtb..." && \
+		sshpass -f <(printf '%s' root) scp ${cfg["img-dir"]}/at91-${cfg["board"]}.dtb root@${cfg["ip"]}:/mnt/${mountDir} > /dev/null
+	else
+		[[ -f ${cfg["img-dir"]}/${cfg["board"]}.itb ]] && \
+		echo "Installing ${cfg["img-dir"]}/${cfg["board"]}.itb..." && \
+		sshpass -f <(printf '%s' root) scp ${cfg["img-dir"]}/${cfg["board"]}.itb root@${cfg["ip"]}:/mnt/${mountDir} > /dev/null
+	fi
+
 	sshpass -f <(printf '%s' root) scp ${cfg["img-dir"]}/u-boot.bin root@${cfg["ip"]}:/mnt/${mountDir} > /dev/null
 	sshpass -f <(printf '%s' root) scp ${cfg["img-dir"]}/uboot.env root@${cfg["ip"]}:/mnt/${mountDir} > /dev/null
 
