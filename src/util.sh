@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# timeout:		count down a numer of seconds
+# timeOut:		count down a numer of seconds
 # @$1:			number of seconds to count down
 # return:		none
-function timeout() {
+function timeOut() {
 	local secs=$1
 	local verbose=$2
 
