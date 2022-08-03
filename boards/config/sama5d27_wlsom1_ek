@@ -1,0 +1,8 @@
+# board config dictionary
+BOARD_NAME=sama5d27_wlsom1_ek
+BOARD_ACM=/dev/ttyACM0
+BOARD_IP=192.168.32.9
+BOARD_HOST_IP=192.168.32.1
+BOARD_PASSWD=root
+BOARD_IMG_DIR=/var/lib/tftpboot/tests/sama5d27_wlsom1_ek
+
