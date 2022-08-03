@@ -38,6 +38,8 @@ function installBootImgs() {
 	runCmd "mount /dev/${bootDevice} /mnt/${mountDir}" "" y > /dev/null
 
 	# copy
+	[[ -f ${cfg["img-dir"]}/BOOT.BIN ]] && \
+	echo "Installing ${cfg["img-dir"]}/BOOT.BIN..." && \
 	sshpass -f <(printf '%s' root) scp ${cfg["img-dir"]}/BOOT.BIN root@${cfg["ip"]}:/mnt/${mountDir} > /dev/null
 
 	# keep zImage and DTB for backward compatiblity
@@ -55,7 +57,12 @@ function installBootImgs() {
 		sshpass -f <(printf '%s' root) scp ${cfg["img-dir"]}/${cfg["board"]}.itb root@${cfg["ip"]}:/mnt/${mountDir} > /dev/null
 	fi
 
+	[[ -f ${cfg["img-dir"]}/u-boot.bin ]] && \
+	echo "Installing ${cfg["img-dir"]}/u-boot.bin..." && \
 	sshpass -f <(printf '%s' root) scp ${cfg["img-dir"]}/u-boot.bin root@${cfg["ip"]}:/mnt/${mountDir} > /dev/null
+
+	[[ -f ${cfg["img-dir"]}/u-boot.bin ]] && \
+	echo "Installing ${cfg["img-dir"]}/uboot.env" && \
 	sshpass -f <(printf '%s' root) scp ${cfg["img-dir"]}/uboot.env root@${cfg["ip"]}:/mnt/${mountDir} > /dev/null
 
 	runCmd "umount /mnt/${mountDir}" "" y> /dev/null
