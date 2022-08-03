@@ -26,12 +26,13 @@ function getBootDevice() {
 function installBootImgs() {
 	eval "declare -A cfg="${1#*=}
 	local bootDevice=$(getBootDevice)
-	local mountDir="${cfg["session-id"]}-${device}"
 
 	if [[ -z ${bootDevice} ]]; then
 		printlog ${err} "Failed to get boot device"
 		return 0
 	fi
+
+	local mountDir="${cfg["session-id"]}-${bootDevice}"
 
 	runCmd "mkdir /mnt/${mountDir}" "" y> /dev/null
 	runCmd "mount /dev/${bootDevice} /mnt/${mountDir}" "" y > /dev/null
