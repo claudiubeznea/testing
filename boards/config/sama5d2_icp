@@ -1,0 +1,8 @@
+# board config dictionary
+BOARD_NAME=sama5d2_icp
+BOARD_ACM=/dev/ttyACM0
+BOARD_IP=192.168.32.10
+BOARD_HOST_IP=192.168.32.1
+BOARD_PASSWD=root
+BOARD_IMG_DIR=/var/lib/tftpboot/tests/sama5d2_icp
+
