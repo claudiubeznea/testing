@@ -1,17 +1,20 @@
 #!/bin/bash
 
 # include dependecies
-source boards/util.sh
-source src/debug.sh
-source src/system.sh
-source src/config.sh
-source src/util.sh
-source src/tests/tests.sh
-source src/tests/ethernet.sh
-source src/tests/ethernet-link.sh
-source src/tests/usb-gadget.sh
-source src/tests/pm.sh
-source src/tests/install-boot-imgs.sh
+root=$(dirname "$0")
+
+source ${root}/boards/util.sh
+source ${root}/src/debug.sh
+source ${root}/src/system.sh
+source ${root}/src/config.sh
+source ${root}/src/util.sh
+source ${root}/src/tests/tests.sh
+source ${root}/src/tests/ethernet.sh
+source ${root}/src/tests/ethernet-link.sh
+source ${root}/src/tests/usb-gadget.sh
+source ${root}/src/tests/pm.sh
+source ${root}/src/tests/install-boot-imgs.sh
+source ${root}/src/tests/reboot.sh
 
 # global dictionary keeping board config
 declare -A config=( )
