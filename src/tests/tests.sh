@@ -3,6 +3,7 @@ declare -A globalTests=(
 	["install-boot-imgs"]=installBootImgs
 	["ethernet-bw"]=testEthernet
 	["ethernet-link"]=testEthernetLink
+	["multiple-reboots"]=testReboot
 	)
 
 # test execution order
@@ -11,6 +12,7 @@ declare -a globalTestsOrdered=(
 	"install-boot-imgs"
 	"ethernet-bw"
 	"ethernet-link"
+	"multiple-reboots"
 	)
 
 # isTestValid:		check if a test is valid
