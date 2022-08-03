@@ -1,12 +1,25 @@
 #!/bin/bash
 
+root=$(dirname "$0")
+
 # showBoards:		list the supported boards
 # @args:		none
 # return:		none
 function showBoards() {
-	for f in boards/config/*; do
+	for f in ${root}/boards/config/*; do
 		boardName=$(basename ${f});
 		echo ${boardName}
+	done
+}
+
+function showBoardsIps() {
+	echo -e "IP\t\tBoard Name"
+	echo -e "------------\t----------"
+	for f in ${root}/boards/config/*; do
+		line=$(grep BOARD_IP ${f})
+		boardName=$(basename ${f})
+		IFS='=' read -ra lineTokenized <<< "${line}"
+		echo -e "${lineTokenized[1]}\t${boardName}"
 	done
 }
 

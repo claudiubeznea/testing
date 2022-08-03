@@ -51,6 +51,8 @@ function usage() {
 	echo -e "\t\tboard to run tests for"
 	echo -e "\t-l"
 	echo -e "\t\tlist all supported boards"
+	echo -e "\t-i"
+	echo -e "\t\tlist IPs supported for each board"
 	echo -e "\t-t"
 	echo -e "\t\trun only test"
 	echo -e "\t-x"
@@ -73,10 +75,11 @@ if validateSystem; then
 fi
 
 board= tst= pm= rootfsPartition= testImgDir=
-while getopts "b:lt:xpc:a:h" opt; do
+while getopts "b:lit:xpc:a:h" opt; do
 	case $opt in
 		b) board=$OPTARG ;;
 		l) showBoards ; exit 0 ;;
+		i) showBoardsIps ; exit 0 ;;
 		t) tst=$OPTARG ;;
 		x) showTests ; exit 0 ;;
 		p) pm=y ;;
