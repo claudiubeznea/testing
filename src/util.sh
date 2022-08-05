@@ -34,16 +34,27 @@ function runCmd() {
 
 	if [ "${blocking}" == "y" ]; then
 		if [ "${logtofile}" == "y" ]; then
-			output=$(sshpass -f <(printf '%s\n' ${config["passwd"]}) timeout ${timeOut} ssh -o StrictHostKeyChecking=no root@${config["ip"]} ${cmd} > /tmp/${config["session-id"]}-${config["board"]}.log)
+			output=$(sshpass -f <(printf '%s\n' ${config["passwd"]}) \
+				timeout ${timeOut} ssh -o StrictHostKeyChecking=no \
+				root@${config["ip"]} ${cmd} > \
+				/tmp/${config["session-id"]}-${config["board"]}.log)
 		else
-			output=$(sshpass -f <(printf '%s\n' ${config["passwd"]}) timeout ${timeOut} ssh -o StrictHostKeyChecking=no root@${config["ip"]} ${cmd})
+			output=$(sshpass -f <(printf '%s\n' ${config["passwd"]}) \
+				timeout ${timeOut} ssh -o StrictHostKeyChecking=no \
+				root@${config["ip"]} ${cmd})
 		fi
 	else
 		if [ "${logtofile}" == "y" ]; then
-			$(sshpass -f <(printf '%s\n' ${config["passwd"]}) timeout ${timeOut} ssh -f -o StrictHostKeyChecking=no root@${config["ip"]} ${cmd} < /dev/null > /tmp/${config["session-id"]}-${config["board"]}.log 2>&1 &)
+			$(sshpass -f <(printf '%s\n' ${config["passwd"]}) timeout \
+			  ${timeOut} ssh -f -o StrictHostKeyChecking=no \
+			  root@${config["ip"]} ${cmd} < /dev/null > \
+			  /tmp/${config["session-id"]}-${config["board"]}.log 2>&1 &)
 		else
-			$(sshpass -f <(printf '%s\n' ${config["passwd"]}) timeout ${timeOut} ssh -f -o StrictHostKeyChecking=no root@${config["ip"]} ${cmd} < /dev/null > /dev/null 2>&1 &)
+			$(sshpass -f <(printf '%s\n' ${config["passwd"]}) timeout \
+			  ${timeOut} ssh -f -o StrictHostKeyChecking=no \
+			  root@${config["ip"]} ${cmd} < /dev/null > /dev/null 2>&1 &)
 		fi
+
 		# give it a chance to start on remote system
 		sleep 5
 	fi
