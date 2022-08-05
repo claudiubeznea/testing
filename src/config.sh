@@ -1,5 +1,7 @@
 #!/bin/bash
 
+root=$(dirname "$0")
+
 # validateConfig:	validate board configuration
 # @args:		none
 # return:		1 - success, 0 - fail
@@ -30,7 +32,7 @@ function updateConfig() {
 		return 0
 	fi
 
-	source "boards/config/${board}"
+	source "${root}/boards/config/${board}"
 
 	config["board"]=${BOARD_NAME}
 	config["acm"]=${BOARD_ACM}
