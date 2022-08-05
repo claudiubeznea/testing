@@ -4,6 +4,7 @@ declare -A globalTests=(
 	["ethernet-bw"]=testEthernet
 	["ethernet-link"]=testEthernetLink
 	["multiple-reboots"]=testReboot
+	["qspi"]=testQspi
 	)
 
 # test execution order
@@ -12,6 +13,7 @@ declare -a globalTestsOrdered=(
 	"install-boot-imgs"
 	"ethernet-bw"
 	"ethernet-link"
+	"qspi"
 	"multiple-reboots"
 	)
 

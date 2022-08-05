@@ -38,6 +38,10 @@ function updateConfig() {
 	config["host-ip"]=${BOARD_HOST_IP}
 	config["passwd"]=${BOARD_PASSWD}
 	config["img-dir"]=${testImgDir}/${BOARD_IMG_DIR}
+	config["qspi-page-write"]=${BOARD_QSPI_WRITE}
+	config["qspi-page-write-unit"]=${BOARD_QSPI_WRITE_UNIT}
+	config["qspi-page-read"]=${BOARD_QSPI_READ}
+	config["qspi-page-read-unit"]=${BOARD_QSPI_READ_UNIT}
 
 	# create it if not available
 	if [[ ! -d ${config["img-dir"]} ]]; then

@@ -15,6 +15,7 @@ source ${root}/src/tests/usb-gadget.sh
 source ${root}/src/tests/pm.sh
 source ${root}/src/tests/install-boot-imgs.sh
 source ${root}/src/tests/reboot.sh
+source ${root}/src/tests/qspi.sh
 
 # global dictionary keeping board config
 declare -A config=( )
