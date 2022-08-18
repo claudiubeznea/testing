@@ -25,11 +25,19 @@ function timeOut() {
 function runCmd() {
 	local cmd=$1
 	local timeOut=3600
-	local blocking=$3
-	local logtofile=$4
+	local blocking=y
+	local logtofile=n
 
 	if [[ ! -z $2 ]]; then
 		timeOut=$2
+	fi
+
+	if [[ ! -z $3 ]]; then
+		blocking=y
+	fi
+
+	if [[ ! -z $4 ]]; then
+		logtofile=y
 	fi
 
 	if [ "${blocking}" == "y" ]; then
