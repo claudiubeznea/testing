@@ -8,6 +8,7 @@ declare -A globalTests=(
 	["usb-gadget"]=testUsbGadget
 	["usb-configfs"]=testUsbConfigfs
 	["usb-ohci-detection"]=testUsbOhciDetection
+	["usb-ohci-communication"]=testUsbOhciCommunication
 	)
 
 # test execution order
@@ -20,6 +21,7 @@ declare -a globalTestsOrdered=(
 	"usb-gadget"
 	"usb-configfs"
 	"usb-ohci-detection"
+	"usb-ohci-communication"
 	"multiple-reboots"
 	)
 

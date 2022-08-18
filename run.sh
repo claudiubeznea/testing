@@ -14,6 +14,7 @@ source ${root}/src/tests/ethernet-link.sh
 source ${root}/src/tests/usb-gadget.sh
 source ${root}/src/tests/usb-configfs.sh
 source ${root}/src/tests/usb-ohci-detection.sh
+source ${root}/src/tests/usb-ohci-communication.sh
 source ${root}/src/tests/pm.sh
 source ${root}/src/tests/install-boot-imgs.sh
 source ${root}/src/tests/reboot.sh
