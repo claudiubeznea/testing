@@ -7,6 +7,7 @@ declare -A globalTests=(
 	["qspi"]=testQspi
 	["usb-gadget"]=testUsbGadget
 	["usb-configfs"]=testUsbConfigfs
+	["usb-ohci-detection"]=testUsbOhciDetection
 	)
 
 # test execution order
@@ -18,6 +19,7 @@ declare -a globalTestsOrdered=(
 	"qspi"
 	"usb-gadget"
 	"usb-configfs"
+	"usb-ohci-detection"
 	"multiple-reboots"
 	)
 
