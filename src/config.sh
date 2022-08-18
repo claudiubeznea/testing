@@ -34,12 +34,15 @@ function updateConfig() {
 
 	source "${root}/boards/config/${board}"
 
+	# general config
 	config["board"]=${BOARD_NAME}
 	config["acm"]=${BOARD_ACM}
 	config["ip"]=${BOARD_IP}
 	config["host-ip"]=${BOARD_HOST_IP}
 	config["passwd"]=${BOARD_PASSWD}
 	config["img-dir"]=${testImgDir}/${BOARD_IMG_DIR}
+
+	# qspi config
 	config["qspi-page-write"]=${BOARD_QSPI_WRITE}
 	config["qspi-page-write-unit"]=${BOARD_QSPI_WRITE_UNIT}
 	config["qspi-page-read"]=${BOARD_QSPI_READ}
