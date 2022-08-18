@@ -5,10 +5,14 @@
 # return:		none
 function timeOut() {
 	local secs=$1
-	local verbose=$2
+	local verbose=n
+
+	if [[ ! -z $2 ]]; then
+		verbose=y
+	fi
 
 	while [ ${secs} -gt 0 ]; do
-		[ "x$verbose" != "x" ] && echo -en "\rWaiting ${secs} seconds..."
+		[ "$verbose" == "y" ] && echo -en "\rWaiting ${secs} seconds..."
 		secs=$((secs-1))
 
 		sleep 1
