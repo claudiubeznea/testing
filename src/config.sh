@@ -47,6 +47,7 @@ function updateConfig() {
 	config["qspi-page-write-unit"]=${BOARD_QSPI_WRITE_UNIT}
 	config["qspi-page-read"]=${BOARD_QSPI_READ}
 	config["qspi-page-read-unit"]=${BOARD_QSPI_READ_UNIT}
+
 	# usb config
 	config["usb-hosts"]=${BOARD_USB_HOSTS}
 
