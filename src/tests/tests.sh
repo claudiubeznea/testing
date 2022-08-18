@@ -11,6 +11,7 @@ declare -A globalTests=(
 	["usb-ohci-communication"]=testUsbOhciCommunication
 	["usb-ehci-detection"]=testUsbEhciDetection
 	["usb-ehci-communication"]=testUsbEhciCommunication
+	["sdmmc-communication"]=testSDMMCCommunication
 	)
 
 # test execution order
@@ -26,6 +27,7 @@ declare -a globalTestsOrdered=(
 	"usb-ohci-communication"
 	"usb-ehci-detection"
 	"usb-ehci-communication"
+	"sdmmc-communication"
 	"multiple-reboots"
 	)
 
