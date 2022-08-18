@@ -12,6 +12,7 @@ source ${root}/src/tests/tests.sh
 source ${root}/src/tests/ethernet.sh
 source ${root}/src/tests/ethernet-link.sh
 source ${root}/src/tests/usb-gadget.sh
+source ${root}/src/tests/usb-configfs.sh
 source ${root}/src/tests/pm.sh
 source ${root}/src/tests/install-boot-imgs.sh
 source ${root}/src/tests/reboot.sh
