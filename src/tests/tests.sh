@@ -5,6 +5,7 @@ declare -A globalTests=(
 	["ethernet-link"]=testEthernetLink
 	["multiple-reboots"]=testReboot
 	["qspi"]=testQspi
+	["usb-gadget"]=testUsbGadget
 	)
 
 # test execution order
@@ -14,6 +15,7 @@ declare -a globalTestsOrdered=(
 	"ethernet-bw"
 	"ethernet-link"
 	"qspi"
+	"usb-gadget"
 	"multiple-reboots"
 	)
 
