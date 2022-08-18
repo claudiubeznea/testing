@@ -20,6 +20,8 @@ source ${root}/src/tests/qspi.sh
 # global dictionary keeping board config
 declare -A config=( )
 
+# black hole
+bh=/dev/null 2>&1
 
 function validateArgs() {
 	if [[ -z $board ]]; then
