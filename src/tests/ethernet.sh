@@ -10,106 +10,60 @@ source ${root}/src/util.sh
 function testEthernet() {
 	eval "declare -A cfg="${1#*=}
 
-	output=$(runCmd "ping -c 1 ${cfg["ip"]}" "" y> /dev/null 2>&1)
-	if [ $? -ne 0 ]; then
-		return 0
-	fi
+	# sanity
+	[[ $(runCmd "ping -c 1 ${cfg["ip"]}" "" y > ${bh}) ]] && return 0
 
 	# RX
-	runCmd "iperf3 -s" 1 y >/dev/null 2>&1
-	if [ $? -ne 0 ]; then
-		return 0
-	fi
+	[[ $(runCmd "iperf3 -s > /tmp/out" 1 > ${bh}) ]] && return 0
+	[[ $(iperf3 -c ${cfg["ip"]} > ${bh}) ]] && return 0
 
-	$(iperf3 -c ${cfg["ip"]} < /dev/null > /dev/null  2>&1)
-	if [ $? -ne 0 ]; then
-		return 0
-	fi
+	# stop the server
+	pid=$(runCmd "ps -ef | grep -m 1 iperf3 | awk '{print \$1}'" "" y)
+	runCmd "kill -9 ${pid}" > ${bh}
 
-	rxBw=$(cat /tmp/${cfg["session-id"]}-${cfg["board"]}.log | grep "receiver" | awk '{print $7}')
-	rxBwUnit=$(cat /tmp/${cfg["session-id"]}-${cfg["board"]}.log | grep "receiver" | awk '{print $8}')
-
+	# get results
+	out=$(runCmd "cat /tmp/out")
+	rxBw=$(echo "${out}" | grep "receiver" | awk '{print $7}')
+	rxBwUnit=$(echo "${out}" | grep "receiver" | awk '{print $8}')
 	printlog ${info} "RX: ${rxBw} ${rxBwUnit} " y
-	runCmd "pkill -f iperf3" "" y > /dev/null 2>&1
-	if [ $? -ne 0 ]; then
-		return 0
-	fi
-
-	$(rm -rf /tmp/${cfg["session-id"]}-${cfg["board"]}.log)
-	if [ $? -ne 0 ]; then
-		return 0
-	fi
 
 	# TX
-	$(iperf3 -s < /dev/null > /tmp/detached_local.log 2>&1 &)
-	if [ $? -ne 0 ]; then
-		return 0
-	fi
-	runCmd "iperf3 -c ${cfg["host-ip"]}" "" y y >/dev/null 2>&1
-	if [ $? -ne 0 ]; then
-		return 0
-	fi
+	[[ $(iperf3 -s > ${bh} &) ]] && return 0
+	[[ $(runCmd "iperf3 -c ${cfg["host-ip"]} > /tmp/out" > ${bh}) ]] && return 0
 
-	txBw=$(cat /tmp/${cfg["session-id"]}-${cfg["board"]}.log | grep "sender" | awk '{print $7}')
-	txBwUnit=$(cat /tmp/${cfg["session-id"]}-${cfg["board"]}.log | grep "sender" | awk '{print $8}')
+	# stop the server
+	pid=$(ps -ef | grep -m 1 iperf3 | awk '{print $2}')
+	[[ $(kill -9 ${pid} > ${bh}) ]] && return 0
 
-	printlog ${info} "TX: ${txBw} ${txBwUnit} " y
-
-	$(pkill iperf3 > /dev/null 2>&1)
-	if [ $? -ne 0 ]; then
-		return 0
-	fi
-
-	$(rm -rf /tmp/${cfg["session-id"]}-${cfg["board"]}.log)
-	if [ $? -ne 0 ]; then
-		return 0
-	fi
+	# get results
+	out=$(runCmd "cat /tmp/out")
+	txBw=$(echo "${out}" | grep "sender" | awk '{print $7}')
+	txBwUnit=$(echo "${out}" | grep "sender" | awk '{print $8}')
+	printlog ${info} "TX: ${txBw} ${txBwUnit}"
 
 	# TX/RX
-	runCmd "iperf3 -s" "" >/dev/null 2>&1
-	if [ $? -ne 0 ]; then
-		return 0
-	fi
-	$(iperf3 -s < /dev/null > /tmp/${cfg["session-id"]}-${cfg["board"]}-server.log 2>&1 &)
-	if [ $? -ne 0 ]; then
-		return 0
-	fi
+	[[ $(runCmd "iperf3 -s > /tmp/out-server &" 1 > ${bh}) ]] && return 0
+	[[ $(iperf3 -s > ${bh} &) ]] && return 0
 
-	runCmd "iperf3 -c ${cfg["host-ip"]} -O 5 -t 60" "" y y >/dev/null 2>&1
-	if [ $? -ne 0 ]; then
-		return 0
-	fi
-	$(iperf3 -c ${cfg["ip"]} -O 5 -t 60 < /dev/null > /dev/null  2>&1)
-	if [ $? -ne 0 ]; then
-		return 0
-	fi
+	[[ $(runCmd "iperf3 -c ${cfg["host-ip"]} -O 5 -t 60 > /tmp/out &" > ${bh}) ]] && return 0
+	[[ $(iperf3 -c ${cfg["ip"]} -O 5 -t 60 > ${bh} &) ]] && return 0
 
-	txBw=$(cat /tmp/${cfg["session-id"]}-${cfg["board"]}.log | grep -m 1 "sender" | awk '{print $7}')
-	txBwUnit=$(cat /tmp/${cfg["session-id"]}-${cfg["board"]}.log | grep -m 1 "sender" | awk '{print $8}')
-	rxBw=$(cat /tmp/${cfg["session-id"]}-${cfg["board"]}.log | grep -m 1 "receiver" | awk '{print $7}')
-	rxBwUnit=$(cat /tmp/${cfg["session-id"]}-${cfg["board"]}.log | grep -m 1 "receiver" | awk '{print $8}')
+	timeOut 70 verbose
 
-	printlog ${info} "TX/RX: ${txBw} ${txBwUnit} / ${rxBw} ${rxBwUnit} " y
+	out=$(runCmd "cat /tmp/out")
+	txBw=$(echo "${out}" | grep -m 1 "sender" | awk '{print $7}')
+	txBwUnit=$(echo "${out}" | grep -m 1 "sender" | awk '{print $8}')
 
-	runCmd "pkill -f iperf3" "" y > /dev/null 2>&1
-	if [ $? -ne 0 ]; then
-		return 0
-	fi
+	out=$(runCmd "cat /tmp/out-server")
+	rxBw=$(echo "${out}" | grep -m 1 "receiver" | awk '{print $7}')
+	rxBwUnit=$(echo "${out}" | grep -m 1 "receiver" | awk '{print $8}')
 
-	$(pkill iperf3 > /dev/null 2>&1)
-	if [ $? -ne 0 ]; then
-		return 0
-	fi
+	printlog ${info} "RX/TX: ${rxBw} ${rxBwUnit} / ${txBw} ${txBwUnit}"
 
-	$(rm -rf /tmp/${cfg["session-id"]}-${cfg["board"]}.log)
-	if [ $? -ne 0 ]; then
-		return 0
-	fi
-
-	$(rm -rf /tmp/${cfg["session-id"]}-${cfg["board"]}-server.log)
-	if [ $? -ne 0 ]; then
-		return 0
-	fi
+	pid=$(ps -ef | grep -m 1 iperf3 | awk '{print $2}')
+	[[ $(kill -9 ${pid} > ${bh}) ]] && return 0
+	pid=$(runCmd "ps -ef | grep -m 1 iperf3 | awk '{print \$1}'" "" y)
+	runCmd "kill -9 ${pid}" > ${bh}
 
 	return 1
 }
