@@ -72,6 +72,8 @@ function usage() {
 	echo -e "\t\t</path/to/rootfs/parition>"
 	echo -e "\t-a"
 	echo -e "\t\t</path/to/dirs/were/test/images/are/stored>"
+	echo -e "\t-d"
+	echo -e "\t\tenable debug"
 	echo -e "\t-h"
 	echo -e "\t\tdisplay this help message and exit"
 	echo -e ""
@@ -84,7 +86,7 @@ if validateSystem; then
 fi
 
 board= tst= pm= rootfsPartition= testImgDir=
-while getopts "b:lit:xpc:a:h" opt; do
+while getopts "b:lit:xpc:a:dh" opt; do
 	case $opt in
 		b) board=$OPTARG ;;
 		l) showBoards ; exit 0 ;;
@@ -94,6 +96,7 @@ while getopts "b:lit:xpc:a:h" opt; do
 		p) pm=y ;;
 		c) rootfsPartition=$OPTARG ;;
 		a) testImgDir=$OPTARG ;;
+		d) set -x ;;
 		h) usage $0; exit 0 ;;
 		:) echo "missing argument for option -$OPTARG"; exit 1 ;;
 		\?) echo "unknown option -$OPTARG"; exit 1 ;;
