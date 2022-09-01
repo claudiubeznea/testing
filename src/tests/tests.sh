@@ -12,6 +12,11 @@ declare -A globalTests=(
 	["usb-ehci-detection"]=testUsbEhciDetection
 	["usb-ehci-communication"]=testUsbEhciCommunication
 	["sdmmc-communication"]=testSDMMCCommunication
+	["standby-continuous"]=testStandbyContinuous
+	["ulp0-continuous"]=testULP0Continuous
+	["ulp1-continuous"]=testULP1Continuous
+	["bsr-continuous"]=testBSRContinuous
+	["bsr-self-refresh"]=testBSRSelfRefresh
 	)
 
 # test execution order
@@ -28,6 +33,11 @@ declare -a globalTestsOrdered=(
 	"usb-ehci-detection"
 	"usb-ehci-communication"
 	"sdmmc-communication"
+	"standby-continuous"
+	"ulp0-continuous"
+	"ulp1-continuous"
+	"bsr-continuous"
+	"bsr-self-refresh"
 	"multiple-reboots"
 	)
 
