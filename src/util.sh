@@ -33,6 +33,37 @@ function runCmd() {
 	printf "%s" "${output}"
 }
 
+function checkPing() {
+	local ip=$1
 
+	output=$(runCmd "ping -c 1 ${ip}")
+	pingOk=$(echo ${output} | grep -i "0% packet loss")
+	[[ -z ${pingOk} ]] && return 0
+
+	return 1
 }
 
+util_verbose=
+function disableVerbose() {
+	util_verbose=$(runCmd "cat /proc/sys/kernel/printk")
+	runCmd "echo 1 1 1 1 > /proc/sys/kernel/printk"
+}
+
+function restoreVerbose() {
+	runCmd "echo \"${util_verbose}\" > /proc/sys/kernel/printk"
+}
+
+function killRemoteProcess() {
+	local processName="$1"
+
+	pid=$(runCmd "ps -ef | grep -m 1 \"${processName}\" | awk '{print \$1}'")
+	runCmd "kill -9 ${pid}" > ${bh}
+}
+
+# tested w/ Ubuntu 2022.04
+function killLocalProcess() {
+	local processName="$1"
+
+	pid=$(ps -ef | grep -m 1 "${processName}" | awk '{print $2}')
+	kill -9 ${pid} > ${bh}
+}
