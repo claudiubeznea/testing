@@ -11,7 +11,7 @@ function testEthernet() {
 	eval "declare -A cfg="${1#*=}
 
 	# sanity
-	[[ $(runCmd "ping -c 1 ${cfg["ip"]}" "" y > ${bh}) ]] && return 0
+	[[ $(checkPing ${cfg["ip"]}) ]] && return 0
 
 	# RX
 	[[ $(runCmd "iperf3 -s > /tmp/out" 1 > ${bh}) ]] && return 0
