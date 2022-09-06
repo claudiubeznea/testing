@@ -1,7 +1,7 @@
 # test name - test function association
 declare -A globalTests=(
 	["install-boot-imgs"]=installBootImgs
-	["ethernet-bw"]=testEthernet
+	["ethernet-bw"]=testEthernetBw
 	["ethernet-link"]=testEthernetLink
 	["multiple-reboots"]=testReboot
 	["qspi"]=testQspi

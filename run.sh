@@ -10,7 +10,6 @@ source ${root}/src/config.sh
 source ${root}/src/util.sh
 source ${root}/src/tests/tests.sh
 source ${root}/src/tests/ethernet.sh
-source ${root}/src/tests/ethernet-link.sh
 source ${root}/src/tests/usb-gadget.sh
 source ${root}/src/tests/usb-configfs.sh
 source ${root}/src/tests/usb-ohci-detection.sh
