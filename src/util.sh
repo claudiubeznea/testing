@@ -56,7 +56,7 @@ function restoreVerbose() {
 function killRemoteProcess() {
 	local processName="$1"
 
-	pid=$(runCmd "ps -ef | grep -m 1 \"${processName}\" | awk '{print \$1}'")
+	pid=$(runCmd "ps | grep -m 1 \"${processName}\" | awk '{print \$1}'")
 	runCmd "kill -9 ${pid}" > ${bh}
 }
 
