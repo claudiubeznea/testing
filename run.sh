@@ -18,6 +18,7 @@ source ${root}/src/tests/usb-ehci-detection.sh
 source ${root}/src/tests/usb-ehci-communication.sh
 source ${root}/src/tests/sdmmc-communication.sh
 source ${root}/src/tests/pm.sh
+source ${root}/src/tests/serial.sh
 source ${root}/src/tests/install-boot-imgs.sh
 source ${root}/src/tests/reboot.sh
 source ${root}/src/tests/qspi.sh

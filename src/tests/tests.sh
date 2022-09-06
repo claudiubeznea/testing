@@ -17,6 +17,8 @@ declare -A globalTests=(
 	["ulp1-continuous"]=testULP1Continuous
 	["bsr-continuous"]=testBSRContinuous
 	["bsr-self-refresh"]=testBSRSelfRefresh
+	["serial-communication"]=testSerialCommunication
+	["serial-dma"]=testSerialDMA
 	)
 
 # test execution order
@@ -38,6 +40,8 @@ declare -a globalTestsOrdered=(
 	"ulp1-continuous"
 	"bsr-continuous"
 	"bsr-self-refresh"
+	"serial-communication"
+	"serial-dma"
 	"multiple-reboots"
 	)
 
